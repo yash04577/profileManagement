@@ -5,7 +5,7 @@ const app = express();
 const port = process.env.PORT || 8000
 require("../DB/connection");
 
-
+app.use(express.json());
 //redirecting to router to check and process the request
 app.use(require("../router/routes"))
 
