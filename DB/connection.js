@@ -1,6 +1,10 @@
+const dotenv = require("dotenv");
 const mongoose = require("mongoose")
 
-const connectionString = "mongodb+srv://yash04577:4577@cluster0.6yy3twg.mongodb.net/?retryWrites=true&w=majority";
+//getting database string username
+const username = process.env.USERNAME.toLocaleLowerCase() + "04577";
+
+const connectionString = `mongodb+srv://${username}:4577@cluster0.6yy3twg.mongodb.net/?retryWrites=true&w=majority`
 mongoose.set("strictQuery", false);
 
 mongoose.connect(connectionString)
