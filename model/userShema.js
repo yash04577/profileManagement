@@ -1,5 +1,11 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const path = require('path');
+
+const envPath = path.join(__dirname, "../config.env");
+require('dotenv').config({ path:envPath });
+
 
 //this is our document model
 
@@ -40,7 +46,15 @@ const userSchema = new mongoose.Schema({
     createdAt : {
         type : Date,
         default: Date.now
-    }
+    },
+
+    tokens : [
+        {
+            token : {
+                type : String
+            }
+        }
+    ]
 
 })
 
@@ -58,39 +72,24 @@ userSchema.pre('save', async function(next){
 
 })
 
-// //adding message
 
-// userSchema.methods.addMessage = async function(message){
+//generating token
 
-//     try{
-//         console.log("inside schema ", message );
-//         this.messages = this.messages.concat({message:message});
-//         await this.save();
+userSchema.methods.generateAuthToken = async function(){
+    try{
 
-//     }
+        console.log("key = ", process.env.SECRET_KEY);
+        let token = jwt.sign({ _id : this._id }, process.env.SECRET_KEY)
+        this.tokens = this.tokens.concat({token:token});
+        await this.save();
+        return token;
 
-//     catch(err){
-//         console.log("mess schmea err " , err);
-//     }
-// }
+    }
 
-
-// //generating token
-
-// userSchema.methods.generateAuthToken = async function(){
-//     try{
-
-//         let token = jwt.sign({ _id : this._id }, process.env.SECRET_KEY)
-//         this.tokens = this.tokens.concat({token:token});
-//         await this.save();
-//         return token;
-
-//     }
-
-//     catch(err){
-//         console.log("on token " + err)
-//     }
-// }
+    catch(err){
+        console.log("on token " + err)
+    }
+}
 
 
 const User = mongoose.model("USER", userSchema);

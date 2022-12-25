@@ -1,7 +1,9 @@
 COMPLETED
-creating a express server
-creating a database and connecting it to app
-signup process is completed with hashed password
+1 => creating a express server 
+2 => creating a database and connecting it to app
+3 => signup process is completed with hashed password
+4 => signin process is completed
+5 => generating cookie 
 
 WORKING ON 
-signin process
+auto login through jwt
